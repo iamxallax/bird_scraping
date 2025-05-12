@@ -1,0 +1,38 @@
+import itertools
+
+def grade(report):
+    grades = {'A': 10, 'B': 8, 'C': 6, 'D': 4, 'E': 2}
+    return (1 + 1 / report['time']) * grades[report['grade']]
+
+def clean_info():
+    reports = []
+    with open('output.txt', 'r') as f:
+        for i, line in enumerate(f):
+            print(i)
+            line = line.strip(" \n\t")
+            print(f"Processing line {line}")
+            if i != 0 and i != len(list(f)) - 1:
+                if line == '':
+                    continue
+                if line == '{':
+                    cur_dict = {}
+                elif line == '}':
+                    reports.append(cur_dict)
+                else:
+                    print("else")
+                    key = line.split(':')[0]
+                    val = "".join(list(itertools.chain.from_iterable(line.split(':')[1:])))
+                    key = key.lstrip('"').rstrip('"')
+                    val = val.lstrip(' "').rstrip('"')
+                    cur_dict[key] = val
+    return reports
+
+def get_info():
+    reports = clean_info()
+    species = []
+    for report in reports:
+        if report['name'] not in species:
+            species.append(report['name'])
+    
+    
+        
